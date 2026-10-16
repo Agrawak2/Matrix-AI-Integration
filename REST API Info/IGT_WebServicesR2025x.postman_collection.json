@@ -1,0 +1,1607 @@
+{
+	"info": {
+		"_postman_id": "cb0e976a-8e61-45cf-9656-03f473b2572e",
+		"name": "IGT_WebServices",
+		"description": "IGT WebServices - 2025x",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28945786"
+	},
+	"item": [
+		{
+			"name": "GetTransientToken_BatchService",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"CAS Authentication with Transient Token\", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        var jsonData = pm.response.json();\r",
+							"        var access_token = jsonData.access_token;\r",
+							"\r",
+							"        console.log(\"CAS_TRANSIENT token :: \" + access_token);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        pm.collectionVariables.set(\"access_token\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "DS-SERVICE-NAME",
+						"value": "IGT_WEBSERVICES",
+						"type": "text"
+					},
+					{
+						"key": "DS-SERVICE-SECRET",
+						"value": "62b9dc58-f4e1-484c-ae55-23bb8eaa6db9",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dpassport_url}}/api/v2/batch/ticket?identifier=admin_platform&service={{3dspace_url}}",
+					"host": [
+						"{{3dpassport_url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"batch",
+						"ticket"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "admin_platform"
+						},
+						{
+							"key": "service",
+							"value": "{{3dspace_url}}"
+						}
+					]
+				},
+				"description": "Get On-Behalf Transient Token"
+			},
+			"response": [
+				{
+					"name": "GetTransientToken_BatchService",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "DS-SERVICE-NAME",
+								"value": "IGT_WEBSERVICES",
+								"type": "text"
+							},
+							{
+								"key": "DS-SERVICE-SECRET",
+								"value": "62b9dc58-f4e1-484c-ae55-23bb8eaa6db9",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "/api/v2/batch/ticket?identifier=admin_platform&service=",
+							"path": [
+								"api",
+								"v2",
+								"batch",
+								"ticket"
+							],
+							"query": [
+								{
+									"key": "identifier",
+									"value": "admin_platform"
+								},
+								{
+									"key": "service",
+									"value": ""
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 15:30:54 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache TomEE"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "must-revalidate"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DS-IAM-VERSION",
+							"value": "2"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,X-DS-IAM-CSRFTOKEN"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "X-DS-IAM-CSRFTOKEN"
+						},
+						{
+							"key": "Access-Control-Max-Age",
+							"value": "600"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=3DD3C6E79BA75874414D08F620981A38; Path=/3dpassport; Secure; HttpOnly; SameSite=None"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"TGT-1839-aaaWWzB1q7dse0NdbNzHLtLrx7y2Ct1Gm1gwkSwcIOnelmoOfl-cas\",\n    \"token_type\": \"CAS_TRANSIENT\",\n    \"expires_in\": 59,\n    \"x3ds_auth_url\": \"https://plm01.xlmsolutions.net/3dpassport\",\n    \"x3ds_reauth_url\": \"https://plm01.xlmsolutions.net/3dpassport/api/login/cas/transient?tgt=TGT-1839-aaaWWzB1q7dse0NdbNzHLtLrx7y2Ct1Gm1gwkSwcIOnelmoOfl-cas&service=https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace\"\n}"
+				}
+			]
+		},
+		{
+			"name": "CASAuthenticationWithTransientToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"CAS Authentication with Transient Token\", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        var jsonData = pm.response.json();\r",
+							"        var access_token = jsonData.access_token;\r",
+							"\r",
+							"        console.log(\"CAS access token :: \" + access_token);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dpassport_url}}/api/login/cas/transient?tgt={{access_token}}&service=https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace",
+					"host": [
+						"{{3dpassport_url}}"
+					],
+					"path": [
+						"api",
+						"login",
+						"cas",
+						"transient"
+					],
+					"query": [
+						{
+							"key": "tgt",
+							"value": "{{access_token}}"
+						},
+						{
+							"key": "service",
+							"value": "https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace"
+						}
+					]
+				},
+				"description": "CAS Authentication using transient token (ticket)"
+			},
+			"response": [
+				{
+					"name": "CASAuthenticationWithTransientToken",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{3dpassport_url}}/api/login/cas/transient?tgt={{access_token}}&service=https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace",
+							"host": [
+								"{{3dpassport_url}}"
+							],
+							"path": [
+								"api",
+								"login",
+								"cas",
+								"transient"
+							],
+							"query": [
+								{
+									"key": "tgt",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "service",
+									"value": "https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 16:04:06 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache TomEE"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "must-revalidate"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-DS-IAM-VERSION",
+							"value": "2"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,X-DS-IAM-CSRFTOKEN"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "X-DS-IAM-CSRFTOKEN"
+						},
+						{
+							"key": "Access-Control-Max-Age",
+							"value": "600"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=CD9DBA0A941FD28FAF7E2484A6100944; Path=/3dpassport; Secure; HttpOnly; SameSite=None"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "CASTGC_cluster-1_sub-cluster-1=TGT-1840-0JlG6AH56R5Xs0VN57W4l7RwXAfivFbb35XHAbkWdE0TI3FkRu-cas; Domain=xlmsolutions.net; Path=/3dpassport/; Secure; HttpOnly; SameSite=None"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "CASTGC=TGT-1840-0JlG6AH56R5Xs0VN57W4l7RwXAfivFbb35XHAbkWdE0TI3FkRu-cas; Path=/3dpassport/; Secure; HttpOnly; SameSite=None"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": "{\n    \"access_token\": \"ST-925-Hn6XZpifSzqdAjcRRcqY-cas\",\n    \"token_type\": \"CAS\",\n    \"expires_in\": 299,\n    \"x3ds_service_redirect_url\": \"https://plm01.xlmsolutions.net/3dspace?ticket=ST-925-Hn6XZpifSzqdAjcRRcqY-cas\",\n    \"x3ds_service_url\": \"https://plm01.xlmsolutions.net/3dspace\",\n    \"x3ds_auth_url\": \"https://plm01.xlmsolutions.net/3dpassport\"\n}"
+				}
+			]
+		},
+		{
+			"name": "MQLService_executeMQL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"MQl Return : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"MQL return :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/MQLService/executeMQL?query=print person admin_platform select assignment&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"MQLService",
+						"executeMQL"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "print person admin_platform select assignment"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "MQLService_executeMQL",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "SecurityContext",
+								"value": "{{security-context}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{3dspace_url}}/resources/IGT/v1/MQLService/executeMQL?query=print person admin_platform select assignment&ticket={{ticket}}",
+							"host": [
+								"{{3dspace_url}}"
+							],
+							"path": [
+								"resources",
+								"IGT",
+								"v1",
+								"MQLService",
+								"executeMQL"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "print person admin_platform select assignment"
+								},
+								{
+									"key": "ticket",
+									"value": "{{ticket}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 16:24:31 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache TomEE"
+						},
+						{
+							"key": "x-request-id",
+							"value": "6803a1d6-38c4-4a1c-9921-a99b2c253208"
+						},
+						{
+							"key": "i3dx-requestid",
+							"value": "6ea0ed0a-b85f-45f5-ae8e-7e067185f970"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+						},
+						{
+							"key": "Access-Control-Max-Age",
+							"value": "600"
+						},
+						{
+							"key": "Content-Length",
+							"value": "154"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						}
+					],
+					"cookie": [],
+					"body": "person   admin_platform \n    assignment = ctx::VPLMProjectLeader.Company Name.Common Space\n    assignment = ctx::VPLMProjectAdministrator.Company Name.Common Space\n    assignment = ctx::VPLMAdmin.Company Name.Default\n    assignment = Grant.Company Name.admin_platform_PRJ\n    assignment = Service Administrator"
+				}
+			]
+		},
+		{
+			"name": "MatrixWebServices_getProgramDataForCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get Program data : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"Program data :: \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/MatrixwebServices/getProgramDataForCustomer?jurName=test&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"MatrixwebServices",
+						"getProgramDataForCustomer"
+					],
+					"query": [
+						{
+							"key": "jurName",
+							"value": "test"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FirmwareServices_getFPFamilyforProgram",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get FP Family data : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"FP Family data :: \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/FirmwareServices/getFPFamilyforProgram?programName=test&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"FirmwareServices",
+						"getFPFamilyforProgram"
+					],
+					"query": [
+						{
+							"key": "programName",
+							"value": "test"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ButtonLegendService_getAttributeChoices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Button Legend Service : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"Button Legend Service:getAttributeChoices \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/getAttributeChoices?attrName=Access Type&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"ButtonLegendService",
+						"getAttributeChoices"
+					],
+					"query": [
+						{
+							"key": "attrName",
+							"value": "Access Type"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ButtonLegendService_getAttributeChoices",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "SecurityContext",
+								"value": "{{security-context}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/getAttributeChoices?attrName=Access Type&ticket={{ticket}}",
+							"host": [
+								"{{3dspace_url}}"
+							],
+							"path": [
+								"resources",
+								"IGT",
+								"v1",
+								"ButtonLegendService",
+								"getAttributeChoices"
+							],
+							"query": [
+								{
+									"key": "attrName",
+									"value": "Access Type"
+								},
+								{
+									"key": "ticket",
+									"value": "{{ticket}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 16:20:50 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache TomEE"
+						},
+						{
+							"key": "x-request-id",
+							"value": "1417c23e-6c98-49a2-8ae1-7348e825cdd5"
+						},
+						{
+							"key": "i3dx-requestid",
+							"value": "e9dafe96-0904-41ae-8f95-69a744d7bf07"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+						},
+						{
+							"key": "Access-Control-Max-Age",
+							"value": "600"
+						},
+						{
+							"key": "Content-Length",
+							"value": "44"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    \"Inherited\",\n    \"Specific\"\n]"
+				}
+			]
+		},
+		{
+			"name": "ButtonLegendService_createButtonLegend",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Button Legend Service data : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"Button Legend Service data, createButtonLegend :: \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/createButtonLegend?sBLName=CreateBotton&programNumber=addButtonProgram&legendValues=legendValue1&legendValues=legendValue2&legendValues=legendValue3&legendSets=1&legendSets=2&legendSets=3&legendSets=4 ",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"ButtonLegendService",
+						"createButtonLegend"
+					],
+					"query": [
+						{
+							"key": "sBLName",
+							"value": "CreateBotton"
+						},
+						{
+							"key": "programNumber",
+							"value": "addButtonProgram"
+						},
+						{
+							"key": "legendValues",
+							"value": "legendValue1"
+						},
+						{
+							"key": "legendValues",
+							"value": "legendValue2"
+						},
+						{
+							"key": "legendValues",
+							"value": "legendValue3"
+						},
+						{
+							"key": "legendSets",
+							"value": "1"
+						},
+						{
+							"key": "legendSets",
+							"value": "2"
+						},
+						{
+							"key": "legendSets",
+							"value": "3"
+						},
+						{
+							"key": "legendSets",
+							"value": "4 "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ButtonLegendService_getNameFromID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Button Legend Service : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"Button Legend Service data, getNameFromID :: \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/getNameFromID?ID=56450.58737.56689.58197&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"ButtonLegendService",
+						"getNameFromID"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "56450.58737.56689.58197"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "ButtonLegendService_getNameFromID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "SecurityContext",
+								"value": "{{security-context}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/getNameFromID?ID=56450.58737.56689.58197&ticket={{ticket}}",
+							"host": [
+								"{{3dspace_url}}"
+							],
+							"path": [
+								"resources",
+								"IGT",
+								"v1",
+								"ButtonLegendService",
+								"getNameFromID"
+							],
+							"query": [
+								{
+									"key": "ID",
+									"value": "56450.58737.56689.58197"
+								},
+								{
+									"key": "ticket",
+									"value": "{{ticket}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 16:21:29 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache TomEE"
+						},
+						{
+							"key": "x-request-id",
+							"value": "21bb9cfe-bcae-4279-adcb-14e3bb80d5c8"
+						},
+						{
+							"key": "i3dx-requestid",
+							"value": "f5128a94-1c19-47c8-b23e-d46cd21eae80"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "20"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+						},
+						{
+							"key": "Access-Control-Expose-Headers",
+							"value": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+						},
+						{
+							"key": "Access-Control-Max-Age",
+							"value": "600"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						}
+					],
+					"cookie": [],
+					"body": "DOC-86259259-0000001"
+				}
+			]
+		},
+		{
+			"name": "ButtonLegendService_findButtonLegends",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Button Legend Service : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"Button Legend Service, findButtonLegend :: \" + responseString);\r",
+							"\r",
+							"  \r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/ButtonLegendService/findButtonLegends?arguments=Language&arguments=Originator&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"ButtonLegendService",
+						"findButtonLegends"
+					],
+					"query": [
+						{
+							"key": "arguments",
+							"value": "Language"
+						},
+						{
+							"key": "arguments",
+							"value": "Originator"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PAUSBDownloadService_getKitJurisdictions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PAUSBDownloadService getKitJurisdictions : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"PAUSBDownloadService_getKitJurisdictions :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/PAUSBDownloadService/getKitJurisdictions?kitName=test&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"PAUSBDownloadService",
+						"getKitJurisdictions"
+					],
+					"query": [
+						{
+							"key": "kitName",
+							"value": "test"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PAUSBDownloadService_getComponentXML",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PAUSBDownloadService getComponentXML : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"PAUSBDownloadService getComponentXML :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/PAUSBDownloadService/getComponentXML?Jur=test1&Kit=test2 &ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"PAUSBDownloadService",
+						"getComponentXML"
+					],
+					"query": [
+						{
+							"key": "Jur",
+							"value": "test1"
+						},
+						{
+							"key": "Kit",
+							"value": "test2 "
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MarketingMedia_getMedia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PAUSBDownloadService getComponentXML : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"PAUSBDownloadService getComponentXML :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/MarketingMedia/getMedia?cmptName=test&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"MarketingMedia",
+						"getMedia"
+					],
+					"query": [
+						{
+							"key": "cmptName",
+							"value": "test"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdJCO_update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PAUSBDownloadService getComponentXML : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"PAUSBDownloadService getComponentXML :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/UpdJCO/update?updates=WBS,test@Long_Text=test2&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"UpdJCO",
+						"update"
+					],
+					"query": [
+						{
+							"key": "updates",
+							"value": "WBS,test@Long_Text=test2"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdJCL_update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PAUSBDownloadService getComponentXML : \", function() {\r",
+							"    if(pm.response.to.have.status(200)) {\r",
+							"\r",
+							"        //var jsonData = pm.response.json();\r",
+							"        const responseString = pm.response.text();\r",
+							"        \r",
+							"\r",
+							"        //const jsonString = JSON.stringify(jsonData, null, 2); \r",
+							"        console.log(\"PAUSBDownloadService getComponentXML :: \" + responseString);\r",
+							"\r",
+							"        //pm.environment(\"access_token\", access_token);\r",
+							"        //pm.collectionVariables.set(\"ticket\", access_token);\r",
+							"    }\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "SecurityContext",
+						"value": "{{security-context}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{3dspace_url}}/resources/IGT/v1/UpdJCL/update?updates=WBS,test@Long_Text=test2&ticket={{ticket}}",
+					"host": [
+						"{{3dspace_url}}"
+					],
+					"path": [
+						"resources",
+						"IGT",
+						"v1",
+						"UpdJCL",
+						"update"
+					],
+					"query": [
+						{
+							"key": "updates",
+							"value": "WBS,test@Long_Text=test2"
+						},
+						{
+							"key": "ticket",
+							"value": "{{ticket}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "3dspace_url_encoded",
+			"value": ""
+		},
+		{
+			"key": "3dspace_url",
+			"value": ""
+		},
+		{
+			"key": "3dpassport_url",
+			"value": ""
+		},
+		{
+			"key": "ticket",
+			"value": ""
+		},
+		{
+			"key": "security-context",
+			"value": ""
+		}
+	]
+}

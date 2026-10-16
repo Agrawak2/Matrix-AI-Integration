@@ -1,0 +1,988 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "IGT_WebServices",
+    "version": "1.0.0",
+    "description": "IGT WebServices - 2025x"
+  },
+  "servers": [
+    {
+      "url": "{{3dpassport_url}}"
+    },
+    {
+      "url": "{{3dspace_url}}"
+    }
+  ],
+  "paths": {
+    "/api/v2/batch/ticket": {
+      "get": {
+        "summary": "GetTransientToken_BatchService",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "admin_platform"
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{3dspace_url}}"
+          },
+          {
+            "name": "DS-SERVICE-NAME",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "IGT_WEBSERVICES"
+          },
+          {
+            "name": "DS-SERVICE-SECRET",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "62b9dc58-f4e1-484c-ae55-23bb8eaa6db9"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GetTransientToken_BatchService",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tue, 30 Dec 2025 15:30:54 GMT"
+              },
+              "Server": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Apache TomEE"
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "must-revalidate"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "nosniff"
+              },
+              "X-DS-IAM-VERSION": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "2"
+              },
+              "X-XSS-Protection": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1; mode=block"
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Accept-Encoding"
+              },
+              "Content-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "gzip"
+              },
+              "Access-Control-Allow-Credentials": {
+                "schema": {
+                  "type": "boolean"
+                },
+                "example": "true"
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,X-DS-IAM-CSRFTOKEN"
+              },
+              "Access-Control-Expose-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "X-DS-IAM-CSRFTOKEN"
+              },
+              "Access-Control-Max-Age": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "600"
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "JSESSIONID=3DD3C6E79BA75874414D08F620981A38; Path=/3dpassport; Secure; HttpOnly; SameSite=None"
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "timeout=5, max=100"
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Keep-Alive"
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "chunked"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "integer"
+                    },
+                    "x3ds_auth_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "x3ds_reauth_url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                },
+                "example": {
+                  "access_token": "TGT-1839-aaaWWzB1q7dse0NdbNzHLtLrx7y2Ct1Gm1gwkSwcIOnelmoOfl-cas",
+                  "token_type": "CAS_TRANSIENT",
+                  "expires_in": 59,
+                  "x3ds_auth_url": "https://plm01.xlmsolutions.net/3dpassport",
+                  "x3ds_reauth_url": "https://plm01.xlmsolutions.net/3dpassport/api/login/cas/transient?tgt=TGT-1839-aaaWWzB1q7dse0NdbNzHLtLrx7y2Ct1Gm1gwkSwcIOnelmoOfl-cas&service=https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get On-Behalf Transient Token"
+      }
+    },
+    "/api/login/cas/transient": {
+      "get": {
+        "summary": "CASAuthenticationWithTransientToken",
+        "parameters": [
+          {
+            "name": "tgt",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{access_token}}"
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "https%3A%2F%2Fplm01.xlmsolutions.net%2F3dspace"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CASAuthenticationWithTransientToken",
+            "headers": {
+              "Date": {
+                "deprecated": false,
+                "schema": {},
+                "example": "Tue, 30 Dec 2025 16:04:06 GMT"
+              },
+              "Server": {
+                "deprecated": false,
+                "schema": {},
+                "example": "Apache TomEE"
+              },
+              "Cache-Control": {
+                "deprecated": false,
+                "schema": {},
+                "example": "must-revalidate"
+              },
+              "X-Content-Type-Options": {
+                "deprecated": false,
+                "schema": {},
+                "example": "nosniff"
+              },
+              "X-DS-IAM-VERSION": {
+                "deprecated": false,
+                "schema": {},
+                "example": "2"
+              },
+              "X-XSS-Protection": {
+                "deprecated": false,
+                "schema": {},
+                "example": "1; mode=block"
+              },
+              "Vary": {
+                "deprecated": false,
+                "schema": {},
+                "example": "Accept-Encoding"
+              },
+              "Content-Encoding": {
+                "deprecated": false,
+                "schema": {},
+                "example": "gzip"
+              },
+              "Access-Control-Allow-Credentials": {
+                "deprecated": false,
+                "schema": {},
+                "example": "true"
+              },
+              "Access-Control-Allow-Methods": {
+                "deprecated": false,
+                "schema": {},
+                "example": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+              },
+              "Access-Control-Allow-Headers": {
+                "deprecated": false,
+                "schema": {},
+                "example": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,X-DS-IAM-CSRFTOKEN"
+              },
+              "Access-Control-Expose-Headers": {
+                "deprecated": false,
+                "schema": {},
+                "example": "X-DS-IAM-CSRFTOKEN"
+              },
+              "Access-Control-Max-Age": {
+                "deprecated": false,
+                "schema": {},
+                "example": "600"
+              },
+              "Set-Cookie": {
+                "deprecated": false,
+                "schema": {},
+                "example": "CASTGC=TGT-1840-0JlG6AH56R5Xs0VN57W4l7RwXAfivFbb35XHAbkWdE0TI3FkRu-cas; Path=/3dpassport/; Secure; HttpOnly; SameSite=None"
+              },
+              "Keep-Alive": {
+                "deprecated": false,
+                "schema": {},
+                "example": "timeout=5, max=100"
+              },
+              "Connection": {
+                "deprecated": false,
+                "schema": {},
+                "example": "Keep-Alive"
+              },
+              "Transfer-Encoding": {
+                "deprecated": false,
+                "schema": {},
+                "example": "chunked"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "integer"
+                    },
+                    "x3ds_service_redirect_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "x3ds_service_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "x3ds_auth_url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                },
+                "example": {
+                  "access_token": "ST-925-Hn6XZpifSzqdAjcRRcqY-cas",
+                  "token_type": "CAS",
+                  "expires_in": 299,
+                  "x3ds_service_redirect_url": "https://plm01.xlmsolutions.net/3dspace?ticket=ST-925-Hn6XZpifSzqdAjcRRcqY-cas",
+                  "x3ds_service_url": "https://plm01.xlmsolutions.net/3dspace",
+                  "x3ds_auth_url": "https://plm01.xlmsolutions.net/3dpassport"
+                }
+              }
+            }
+          }
+        },
+        "description": "CAS Authentication using transient token (ticket)"
+      }
+    },
+    "/resources/IGT/v1/MQLService/executeMQL": {
+      "get": {
+        "summary": "MQLService_executeMQL",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "print person admin_platform select assignment"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MQLService_executeMQL",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tue, 30 Dec 2025 16:24:31 GMT"
+              },
+              "Server": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Apache TomEE"
+              },
+              "x-request-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "6803a1d6-38c4-4a1c-9921-a99b2c253208"
+              },
+              "i3dx-requestid": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "6ea0ed0a-b85f-45f5-ae8e-7e067185f970"
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Accept-Encoding"
+              },
+              "Content-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "gzip"
+              },
+              "Access-Control-Allow-Credentials": {
+                "schema": {
+                  "type": "boolean"
+                },
+                "example": "true"
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+              },
+              "Access-Control-Expose-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+              },
+              "Access-Control-Max-Age": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "600"
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "154"
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "timeout=5, max=100"
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Keep-Alive"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/IGT/v1/MatrixwebServices/getProgramDataForCustomer": {
+      "get": {
+        "summary": "MatrixWebServices_getProgramDataForCustomer",
+        "parameters": [
+          {
+            "name": "jurName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/FirmwareServices/getFPFamilyforProgram": {
+      "get": {
+        "summary": "FirmwareServices_getFPFamilyforProgram",
+        "parameters": [
+          {
+            "name": "programName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/ButtonLegendService/getAttributeChoices": {
+      "get": {
+        "summary": "ButtonLegendService_getAttributeChoices",
+        "parameters": [
+          {
+            "name": "attrName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "Access Type"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ButtonLegendService_getAttributeChoices",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tue, 30 Dec 2025 16:20:50 GMT"
+              },
+              "Server": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Apache TomEE"
+              },
+              "x-request-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1417c23e-6c98-49a2-8ae1-7348e825cdd5"
+              },
+              "i3dx-requestid": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "e9dafe96-0904-41ae-8f95-69a744d7bf07"
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Accept-Encoding"
+              },
+              "Content-Encoding": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "gzip"
+              },
+              "Access-Control-Allow-Credentials": {
+                "schema": {
+                  "type": "boolean"
+                },
+                "example": "true"
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+              },
+              "Access-Control-Expose-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+              },
+              "Access-Control-Max-Age": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "600"
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "44"
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "timeout=5, max=100"
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Keep-Alive"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/IGT/v1/ButtonLegendService/createButtonLegend": {
+      "get": {
+        "summary": "ButtonLegendService_createButtonLegend",
+        "parameters": [
+          {
+            "name": "sBLName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "CreateBotton"
+          },
+          {
+            "name": "programNumber",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "addButtonProgram"
+          },
+          {
+            "name": "legendValues",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "legendValue1"
+          },
+          {
+            "name": "legendSets",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "1"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/ButtonLegendService/getNameFromID": {
+      "get": {
+        "summary": "ButtonLegendService_getNameFromID",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "56450.58737.56689.58197"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ButtonLegendService_getNameFromID",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tue, 30 Dec 2025 16:21:29 GMT"
+              },
+              "Server": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Apache TomEE"
+              },
+              "x-request-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "21bb9cfe-bcae-4279-adcb-14e3bb80d5c8"
+              },
+              "i3dx-requestid": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "f5128a94-1c19-47c8-b23e-d46cd21eae80"
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "20"
+              },
+              "Access-Control-Allow-Credentials": {
+                "schema": {
+                  "type": "boolean"
+                },
+                "example": "true"
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "GET, POST, OPTIONS, HEAD, PUT, DELETE, PATCH"
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "accept,x-requested-method,origin,x-requested-with,x-request,cache-control,content-type,last-modified,x-utc-offset,SecurityContext,X-DS-CSRFTOKEN,keep-alive,DS-API-Version,DS-Client-Step-Name,DS-Request-ID,ENO_CSRF_TOKEN,SecurityToken,DS-Change-Authoring-Context,DS-Configuration-Authoring-Context,DS-Bookmark-WorkUnder"
+              },
+              "Access-Control-Expose-Headers": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DS-Request-ID,X-DS-CSRFTOKEN,X-3DComment-Has-Moderation-Rights,ENO_CSRF_TOKEN"
+              },
+              "Access-Control-Max-Age": {
+                "schema": {
+                  "type": "integer"
+                },
+                "example": "600"
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "timeout=5, max=100"
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Keep-Alive"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/IGT/v1/ButtonLegendService/findButtonLegends": {
+      "get": {
+        "summary": "ButtonLegendService_findButtonLegends",
+        "parameters": [
+          {
+            "name": "arguments",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "Language"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{ticket}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/PAUSBDownloadService/getKitJurisdictions": {
+      "get": {
+        "summary": "PAUSBDownloadService_getKitJurisdictions",
+        "parameters": [
+          {
+            "name": "kitName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/PAUSBDownloadService/getComponentXML": {
+      "get": {
+        "summary": "PAUSBDownloadService_getComponentXML",
+        "parameters": [
+          {
+            "name": "Jur",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test1"
+          },
+          {
+            "name": "Kit",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test2 "
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/MarketingMedia/getMedia": {
+      "get": {
+        "summary": "MarketingMedia_getMedia",
+        "parameters": [
+          {
+            "name": "cmptName",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "test"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/UpdJCO/update": {
+      "get": {
+        "summary": "UpdJCO_update",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "WBS,test@Long_Text=test2"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resources/IGT/v1/UpdJCL/update": {
+      "get": {
+        "summary": "UpdJCL_update",
+        "parameters": [
+          {
+            "name": "updates",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "WBS,test@Long_Text=test2"
+          },
+          {
+            "name": "ticket",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{ticket}}"
+          },
+          {
+            "name": "SecurityContext",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "{{security-context}}"
+          }
+        ],
+        "responses": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,227 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="matrix-api-url" content="{% url 'gateway-api' %}">
+    <title>Matrix AI Integration</title>
+    <link rel="stylesheet" href="{% static 'gateway/styles.css' %}?v=part-number-planner-1">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">ENOVIA / Matrix Gateway</p>
+                <h1>Matrix AI Integration</h1>
+            </div>
+            <div class="session-panel" id="session-panel">
+                <select id="mock-user">
+                    <option value="engineer">Erin Engineer</option>
+                    <option value="approver">Priya Approver</option>
+                    <option value="admin">Avery Admin</option>
+                </select>
+                <button type="button" id="login-button">Login</button>
+            </div>
+        </header>
+
+        <nav class="tabs" aria-label="Workspace">
+            <button type="button" class="tab-button active" data-tab="part-number-panel">New Part Number</button>
+            <button type="button" class="tab-button" data-tab="eco-panel">ECO Impact</button>
+            <button type="button" class="tab-button" data-tab="part-search-panel">Part Search</button>
+            <button type="button" class="tab-button" data-tab="part-panel">Part Creation</button>
+            <button type="button" class="tab-button" data-tab="approval-panel">Approvals</button>
+            <button type="button" class="tab-button" data-tab="permissions-panel">Local Permissions</button>
+            <button type="button" class="tab-button" data-tab="api-catalog-panel" data-admin-only hidden>Admin/API</button>
+        </nav>
+
+        <section class="workspace">
+            <section id="part-number-panel" class="tab-panel active">
+                <form id="part-number-form" class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>New Part Number</h2>
+                        <span class="status" id="part-number-status">Ready</span>
+                    </div>
+                    <label for="part-number-prompt">What are you creating?</label>
+                    <textarea id="part-number-prompt" name="prompt" rows="3">Let's pull a P/N for a new Bracket...</textarea>
+                    <label for="part-number-description">Matrix description</label>
+                    <input id="part-number-description" name="description" value="BRACKET, NEW">
+                    <div class="form-grid">
+                        <div>
+                            <label for="part-number-family">Family override</label>
+                            <input id="part-number-family" name="family_prefix" placeholder="e.g. 629" inputmode="numeric" maxlength="3">
+                        </div>
+                        <div>
+                            <label for="part-number-suffix">Suffix</label>
+                            <input id="part-number-suffix" name="suffix" value="00" inputmode="numeric" maxlength="2">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div>
+                            <label for="part-number-type">Part type</label>
+                            <select id="part-number-type" name="part_type">
+                                <option>Unfinished Part</option>
+                                <option>Finished Part</option>
+                                <option>Assembly</option>
+                                <option>Commercial Part</option>
+                                <option>Material_IGT</option>
+                                <option>Tool</option>
+                                <option>Document Part</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="part-number-uom">Unit of measure</label>
+                            <select id="part-number-uom" name="unit_of_measure">
+                                <option>EA</option>
+                                <option>G</option>
+                                <option>DD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label for="part-number-bom">BOM items (optional)</label>
+                    <textarea id="part-number-bom" name="bom_items_text" rows="3" placeholder="CHILD-PART, quantity, find number&#10;MEC-3301, 2, 10"></textarea>
+                    <p class="field-help">The summary checks the six-digit family sequence across Matrix and SAP/legacy data, then stages one part-create action plus any BOM additions.</p>
+                    <div class="actions">
+                        <button type="submit">Prepare Creation Summary</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="eco-panel" class="tab-panel">
+                <form id="eco-form" class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>ECO Impact</h2>
+                        <span class="status" id="eco-status">Ready</span>
+                    </div>
+                    <label for="eco-title">Title</label>
+                    <input id="eco-title" name="title" value="Cooling update for power board">
+                    <label for="eco-reason">Reason</label>
+                    <textarea id="eco-reason" name="reason" rows="3">Thermal review found sustained high temperature near the power distribution board.</textarea>
+                    <label for="eco-change">Requested change</label>
+                    <textarea id="eco-change" name="requested_change" rows="3">Revise board layout and update affected assembly documentation.</textarea>
+                    <label for="eco-parts">Affected parts</label>
+                    <textarea id="eco-parts" name="affected_parts" rows="3">PCB-2045, ASM-1000</textarea>
+                    <div class="actions">
+                        <button type="submit">Analyze ECO</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="part-search-panel" class="tab-panel">
+                <div id="part-search-form" class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>Part Search</h2>
+                        <span class="status" id="part-search-status">Ready</span>
+                    </div>
+                    <label for="part-search-query">Part number</label>
+                    <input id="part-search-query" name="query" value="PCB" autocomplete="off">
+                    <label for="part-search-source">Source</label>
+                    <select id="part-search-source" name="source">
+                        <option value="mock">Mock Matrix data</option>
+                        <option value="matrix">Matrix server</option>
+                        <option value="sap">SAP / legacy source</option>
+                    </select>
+                    <div class="actions">
+                        <button type="button" id="part-search-button">Search Parts</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="part-panel" class="tab-panel">
+                <form id="part-form" class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>Part Creation</h2>
+                        <span class="status" id="part-status">Ready</span>
+                    </div>
+                    <label for="part-number">Part number</label>
+                    <input id="part-number" name="part_number" value="PCB-7777">
+                    <label for="part-name">Name</label>
+                    <input id="part-name" name="name" value="Power Distribution Board Low Heat Variant">
+                    <div class="form-grid">
+                        <div>
+                            <label for="part-revision">Revision</label>
+                            <input id="part-revision" name="revision" value="A">
+                        </div>
+                        <div>
+                            <label for="part-classification">Classification</label>
+                            <select id="part-classification" name="classification">
+                                <option>Electrical</option>
+                                <option>Assembly</option>
+                                <option>Mechanical</option>
+                                <option>Cable</option>
+                                <option>Document</option>
+                                <option>Firmware</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div>
+                            <label for="part-material">Material</label>
+                            <input id="part-material" name="material" value="FR4">
+                        </div>
+                        <div>
+                            <label for="part-supplier">Supplier</label>
+                            <input id="part-supplier" name="supplier" value="Acme Circuits">
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="submit">Analyze Part</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="approval-panel" class="tab-panel">
+                <div class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>Approvals &amp; History</h2>
+                        <button type="button" class="secondary" id="refresh-history">Refresh</button>
+                    </div>
+                    <div id="history-output" class="stacked-list"></div>
+                </div>
+            </section>
+
+            <section id="permissions-panel" class="tab-panel">
+                <div class="tool-panel">
+                    <div class="panel-heading">
+                        <h2>Local App Permissions</h2>
+                        <span class="status" id="permission-status">Ready</span>
+                    </div>
+                    <div id="permissions-output" class="permission-table"></div>
+                </div>
+            </section>
+
+            <section id="api-catalog-panel" class="tab-panel">
+                <div class="tool-panel api-admin-panel">
+                    <div class="panel-heading">
+                        <h2>Matrix API Catalog</h2>
+                        <span class="status" id="api-catalog-status">Ready</span>
+                    </div>
+                    <div class="api-actions">
+                        <div class="mini-tabs" aria-label="Matrix API catalog view">
+                            <button type="button" class="secondary active" data-api-catalog-filter="enabled">Enabled in Matrix</button>
+                            <button type="button" class="secondary" data-api-catalog-filter="all">All Available</button>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="secondary" id="refresh-api-catalog">Refresh</button>
+                            <button type="button" id="sync-api-catalog">Sync Spec</button>
+                        </div>
+                    </div>
+                    <div id="matrix-connection-output" class="connection-summary"></div>
+                    <div id="api-catalog-output" class="permission-table"></div>
+                </div>
+            </section>
+
+            <aside class="result-panel" aria-live="polite">
+                <div class="panel-heading">
+                    <h2>Result</h2>
+                    <button type="button" class="secondary" id="approve-all-button" hidden>Approve All Eligible</button>
+                </div>
+                <div id="result-output" class="result-content"></div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="{% static 'gateway/app.js' %}?v=part-number-planner-1"></script>
+</body>
+</html>

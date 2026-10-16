@@ -1,0 +1,343 @@
+version: "0.1"
+severity_levels:
+  BLOCKER: "Must be fixed to proceed at this gate"
+  ERROR: "Violates standard; fix before next gate"
+  WARN: "Likely issue; strongly recommended to fix"
+  INFO: "Educational / optional improvement"
+
+domains:
+  - ECO
+  - PART
+  - TITLE_DRAFTING
+
+rules:
+
+  # =========================
+  # ECO (Create / Promote)
+  # =========================
+  - id: ECO-CRT-001
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.Create"
+    description: "Mandatory ECO fields must be populated before Promote."
+    check:
+      required_fields:
+        - type
+        - policy
+        - description
+        - eco_category
+        - eco_release_code
+        - responsible_design_engineer
+        - coordinator
+        - hps
+        - lead
+        - manager
+        - sap_project_wbs
+        - sap_project_network
+        - due_date
+    fix: "Populate missing fields from SAP estimate / engineer request per procedure."
+    refs: ["HE055"]
+
+  - id: ECO-CRT-002
+    domain: ECO
+    severity: WARN
+    gate: "ECO.Create"
+    description: "First ECO for a project should be created by the project coordinator assignee; subsequent ECOs may be created by assignees duplicating assignments."
+    check:
+      requires_context: ["is_first_project_eco", "created_by_role"]
+    fix: "If first ECO and creator is not coordinator assignee, flag for coordinator action."
+    refs: ["HE055"]
+
+  - id: ECO-CODE-001
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.Create"
+    description: "ECO Release Code must be one of the supported values."
+    check:
+      allowed_values: ["ECO-MNB", "EDU-CP", "EDU-GEN", "NPI", "Standard", "Systems"]
+    fix: "Select correct ECO Release Code for intended change scope."
+    refs: ["HE055"]
+
+  - id: ECO-NPI-001
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.Any"
+    description: "NPI ECO cannot be attached to an ECR."
+    check:
+      if:
+        eco_release_code: "NPI"
+      then:
+        must_have:
+          related_ecr_count: 0
+    fix: "Detach ECR or change ECO release code after owner confirmation."
+    refs: ["HE139"]
+
+  - id: ECO-NPI-002
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.DefineComponents"
+    description: "NPI ECO can only release new products; revised previously released parts are not permitted."
+    check:
+      if:
+        eco_release_code: "NPI"
+      then:
+        must_have:
+          revised_parts_count: 0
+          revised_specs_count: 0
+          ob_in_parts_count: 0
+    fix: "Move revised/OB content to a Standard ECO; keep NPI ECO New-only."
+    refs: ["HE139"]
+
+  - id: ECO-NOTES-001
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.PromoteToReview"
+    description: "VC Notes Required must be set to Yes or No (not Unknown) before promotion to Review."
+    check:
+      allowed_values:
+        vc_notes_required: ["Yes", "No"]
+    fix: "Set VC Notes Required = Yes if VC notes exist; otherwise No."
+    refs: ["HE075"]
+
+  - id: ECO-NOTES-002
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.PromoteToReview"
+    description: "Coordinator Instructions must be set before promotion to Review; use template 'NO INSTRUCTIONS NEEDED' if none."
+    check:
+      must_not_be_blank: ["coordinator_instructions"]
+    fix: "Load template and set instructions (or 'NO INSTRUCTIONS NEEDED')."
+    refs: ["HE076"]
+
+  - id: ECO-DEF-001
+    domain: ECO
+    severity: ERROR
+    gate: "ECO.DefineComponents"
+    description: "At Define Components: attach Related ECR(s) and populate Revised/New/OB tabs as applicable."
+    check:
+      requires_context: ["change_scope", "expected_tabs_populated"]
+    fix: "Attach Related ECR(s); add items to Revised Parts/Specs, OB/IN Parts, New Parts, New Specs as required."
+    refs: ["HE080"]
+
+  - id: ECO-REL-001
+    domain: ECO
+    severity: WARN
+    gate: "ECO.Release"
+    description: "Run ECO Conflicting Parts Report and resolve discrepancies before release."
+    check:
+      requires_context: ["conflict_report_run", "conflicts_remaining"]
+    fix: "Run HE007 report; move parts to proper ECO if needed."
+    refs: ["HE007"]
+
+  - id: ECO-SAP-001
+    domain: ECO
+    severity: BLOCKER
+    gate: "ECO.ReleaseToSAP"
+    description: "At Release: Create SAP ECO + Transfer to SAP must complete without red errors; then verify CC03/MM03 and Mark ECO Released."
+    check:
+      requires_context: ["sap_transfer_status", "cc03_verified", "mm03_verified", "eco_marked_released"]
+    fix: "Clear transfer errors; complete CC03/MM03 checks; Mark ECO Released."
+    refs: ["HE056"]
+
+  # =========================
+  # PART (Create / Push-to-SAP)
+  # =========================
+  - id: PART-NUM-001
+    domain: PART
+    severity: ERROR
+    gate: "Part.Create"
+    description: "Part number should conform to standard IGT format (AAABBBCCD + optional extension) unless exception category applies (e.g., wire)."
+    check:
+      pattern: "^(\\d{8}[A-Z0-9]?)$"
+      exceptions: ["single_conductor_wire", "special_formats"]
+    fix: "Validate prefix (AAA) via REF0178 and sequence (BBB) via HE115; apply exception rules if needed."
+    refs: ["REF0178", "HE115", "HE042"]
+
+  - id: PART-NAME-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.Create"
+    description: "Part Name (part number) must be ALL CAPS, <=18 chars, and contain no disallowed characters."
+    check:
+      max_length: 18
+      must_be_uppercase: true
+      disallowed_chars_ref: "REF0182"
+    fix: "Remove disallowed characters; ensure uppercase; shorten to <=18."
+    refs: ["HE020", "REF0182"]
+
+  - id: PART-AUTONAME-001
+    domain: PART
+    severity: ERROR
+    gate: "Part.Create"
+    description: "Autoname must be unchecked and Autoname Series not selected."
+    check:
+      must_equal:
+        autoname_checked: false
+    fix: "Uncheck Autoname and set Autoname Series = Not Selected."
+    refs: ["HE042"]
+
+  - id: PART-DESC-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.Create"
+    description: "Description must be ALL CAPS, <=40 chars, and contain no disallowed characters; follow HE015 structure."
+    check:
+      max_length: 40
+      must_be_uppercase: true
+      disallowed_chars_ref: "REF0182"
+      must_not_contain_words: [" FOR ", " OR "]
+      must_not_contain_parentheses: true
+    fix: "Rewrite description as noun phrase; remove FOR/OR/parentheses; uppercase; shorten."
+    refs: ["HE020", "HE015", "REF0182"]
+
+  - id: PART-TYPE-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.Create"
+    description: "Part Type must be selected using the HE042 decision tree (Document/Proprietary/Color/Tool/Assembly/etc.)."
+    check:
+      requires_context: ["part_type", "decision_tree_path"]
+    fix: "Re-select Part Type per decision tree; confirm with user if ambiguous."
+    refs: ["HE042"]
+
+  - id: PART-UOM-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.PushToSAP"
+    description: "Unit of Measure must be correct before pushing to SAP; wrong UOM generally requires OB + new part number (DD/EA exception)."
+    check:
+      requires_context: ["uom_selected", "push_to_sap_requested", "uom_verified"]
+    fix: "Verify UOM now; do not push until correct."
+    refs: ["HE020"]
+
+  - id: PART-MATERIALIGT-001
+    domain: PART
+    severity: ERROR
+    gate: "Part.Create"
+    description: "Material_IGT parts typically use Gram UOM and are used in BOMs for Unfinished/Finished parts."
+    check:
+      if:
+        part_type: "Material_IGT"
+      then:
+        should_equal:
+          unit_of_measure: "G"
+    fix: "Set UOM to G and confirm Basic Material per procedure."
+    refs: ["HE042"]
+
+  - id: PART-DOCS-001
+    domain: PART
+    severity: WARN
+    gate: "Part.PeerReviewReadiness"
+    description: "Commercial/Material_IGT parts with documentation should have files uploaded under Reference Documents with standardized comments (DOCS/MSDS/SPEC/Quote)."
+    check:
+      requires_context: ["part_type", "reference_documents_present", "reference_doc_tags_used"]
+    fix: "Upload documents and tag with standard comment labels."
+    refs: ["HE042"]
+
+  - id: TOOL-CRT-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.Create"
+    description: "Tool parts: Env Compliance Required = NO; Tool Cost + Vendor required; Weight = 0.0; no $/commas in Tool Cost."
+    check:
+      if:
+        part_type: "Tool"
+      then:
+        must_equal:
+          environmental_compliance_required: "NO"
+        must_have: ["tool_cost", "tool_vendor"]
+    fix: "Set required attributes; correct Tool Cost formatting; attach vendor quote/documents."
+    refs: ["HE104"]
+
+  - id: PART-SAP-001
+    domain: PART
+    severity: BLOCKER
+    gate: "Part.PushToSAP"
+    description: "Before pushing to SAP: verify key attributes and ensure the part is attached to an ECO."
+    check:
+      must_have: ["part_type", "part_name", "policy", "unit_of_measure", "basic_material", "eco_to_release_or_attached_eco"]
+    fix: "Complete attributes and attach part to ECO before push request."
+    refs: ["HE083"]
+
+  - id: PART-DEL-001
+    domain: PART
+    severity: INFO
+    gate: "Part.Delete"
+    description: "If part exists in SAP, it cannot be deleted and must be OB/IN; otherwise it may be deleted in Enovia."
+    check:
+      requires_context: ["exists_in_sap"]
+    fix: "If exists in SAP: OB/IN path; else allow delete."
+    refs: ["HE042"]
+
+  # =========================
+  # TITLE / DRAFTING
+  # =========================
+  - id: TITLE-001
+    domain: TITLE_DRAFTING
+    severity: ERROR
+    gate: "Title.Validate"
+    description: "Title must be uppercase."
+    check:
+      must_be_uppercase: true
+    fix: "Convert to uppercase."
+    refs: ["HE015"]
+
+  - id: TITLE-002
+    domain: TITLE_DRAFTING
+    severity: ERROR
+    gate: "Title.Validate"
+    description: "Title must not use 'FOR' or 'OR'."
+    check:
+      must_not_contain_words: [" FOR ", " OR "]
+    fix: "Rewrite using noun phrase modifiers (comma-separated)."
+    refs: ["HE015"]
+
+  - id: TITLE-003
+    domain: TITLE_DRAFTING
+    severity: ERROR
+    gate: "Title.Validate"
+    description: "No parenthetical words/phrases in titles."
+    check:
+      must_not_contain_parentheses: true
+    fix: "Remove parentheses and rewrite modifiers."
+    refs: ["HE015"]
+
+  - id: TITLE-004
+    domain: TITLE_DRAFTING
+    severity: WARN
+    gate: "Title.Validate"
+    description: "Use noun name + modifiers; avoid material/fabrication method naming."
+    check:
+      requires_context: ["noun_phrase_present"]
+    fix: "Rewrite to a basic noun + distinguishing modifiers."
+    refs: ["HE015"]
+
+  - id: DRAFT-PL-001
+    domain: TITLE_DRAFTING
+    severity: WARN
+    gate: "Drawing.Metadata"
+    description: "Title block should match Enovia title/number/rev and include scale + sheet numbering."
+    check:
+      requires_context: ["title_matches_matrix", "drawing_number_matches", "rev_matches", "scale_present", "sheet_x_of_y_present"]
+    fix: "Update drawing metadata to match Matrix and complete scale/sheet fields."
+    refs: ["MAN-HE01"]
+
+  - id: DRAFT-PL-002
+    domain: TITLE_DRAFTING
+    severity: ERROR
+    gate: "Drawing.PartsList"
+    description: "IGT part numbers shall not be listed in drawing Parts List; use Bubble BOM item numbers instead."
+    check:
+      requires_context: ["parts_list_contains_igt_part_numbers"]
+    fix: "Remove IGT part numbers from Parts List; use Bubble BOM callouts tied to Matrix Find Numbers."
+    refs: ["MAN-HE01"]
+
+  - id: DRAFT-PL-003
+    domain: TITLE_DRAFTING
+    severity: WARN
+    gate: "Drawing.BOMCallouts"
+    description: "Bubble BOM item numbers should correspond to Matrix Find Numbers (F/N)."
+    check:
+      requires_context: ["bubble_bom_matches_find_numbers"]
+    fix: "Align bubble numbers with Matrix BOM Find Numbers."
+    refs: ["MAN-HE01"]

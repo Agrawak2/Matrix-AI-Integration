@@ -1,0 +1,119 @@
+{
+  "version": "0.1",
+  "schemas": {
+    "ECO": {
+      "type": "object",
+      "required": ["eco_number", "state", "basic_attributes"],
+      "properties": {
+        "eco_number": { "type": "string" },
+        "state": { "type": "string", "description": "Create/Define Components/Design Work/Review/Release/etc." },
+        "basic_attributes": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" },
+            "policy": { "type": "string" },
+            "description": { "type": "string" },
+            "eco_category": { "type": "string" },
+            "eco_release_code": { "type": "string" },
+            "release_distribution_group": { "type": "string" },
+            "responsible_design_engineer": { "type": "string" },
+            "responsible_manufacturing_engineer": { "type": "string" },
+            "coordinator": { "type": "string" },
+            "hps": { "type": "string" },
+            "lead": { "type": "string" },
+            "manager": { "type": "string" },
+            "director": { "type": "string" },
+            "sap_project_wbs": { "type": "string" },
+            "sap_project_network": { "type": "string" },
+            "due_date": { "type": "string" },
+            "design_responsibility": { "type": "string" },
+            "vc_notes_required": { "type": "string", "enum": ["Yes", "No", "Unknown"] },
+            "coordinator_instructions": { "type": "string" }
+          }
+        },
+        "relations": {
+          "type": "object",
+          "properties": {
+            "related_ecrs": { "type": "array", "items": { "type": "string" } },
+            "new_parts": { "type": "array", "items": { "type": "string" } },
+            "new_specs": { "type": "array", "items": { "type": "string" } },
+            "revised_parts": { "type": "array", "items": { "type": "string" } },
+            "revised_specs": { "type": "array", "items": { "type": "string" } },
+            "ob_in_parts": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "workflow_flags": {
+          "type": "object",
+          "properties": {
+            "conflict_report_run": { "type": "boolean" },
+            "sap_transfer_status": { "type": "string", "enum": ["not_started", "red_errors", "complete_black"] },
+            "cc03_verified": { "type": "boolean" },
+            "mm03_verified": { "type": "boolean" },
+            "eco_marked_released": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "PART": {
+      "type": "object",
+      "required": ["part_number", "policy", "part_type", "description"],
+      "properties": {
+        "part_number": { "type": "string" },
+        "part_type": { "type": "string" },
+        "policy": { "type": "string" },
+        "state": { "type": "string" },
+        "description": { "type": "string" },
+        "unit_of_measure": { "type": "string" },
+        "basic_material": { "type": "string" },
+        "design_responsibility": { "type": "string" },
+        "environmental_compliance_required": { "type": "string" },
+        "eco_to_release": { "type": "string" },
+        "attached_eco": { "type": "string" },
+        "reference_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "filename": { "type": "string" },
+              "comment_tag": { "type": "string" }
+            }
+          }
+        },
+        "tool_fields": {
+          "type": "object",
+          "properties": {
+            "tool_cost": { "type": "number" },
+            "tool_vendor": { "type": "string" },
+            "weight": { "type": "number" }
+          }
+        },
+        "exists_in_sap": { "type": "boolean" }
+      }
+    },
+
+    "VALIDATION_RESULT": {
+      "type": "object",
+      "required": ["status", "findings"],
+      "properties": {
+        "status": { "type": "string", "enum": ["PASS", "FAIL"] },
+        "gate": { "type": "string" },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule_id", "severity", "message"],
+            "properties": {
+              "rule_id": { "type": "string" },
+              "severity": { "type": "string", "enum": ["BLOCKER", "ERROR", "WARN", "INFO"] },
+              "message": { "type": "string" },
+              "evidence": { "type": "object" },
+              "suggested_fix": { "type": "string" },
+              "refs": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    }
+  }
+}

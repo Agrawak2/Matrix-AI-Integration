@@ -1,0 +1,14 @@
+{
+  "active_profile": "matrix-qa",
+  "profiles": [
+    {
+      "name": "matrix-qa",
+      "passport_url": "https://matrix-qa.example.com/3dpassport",
+      "space_url": "https://matrix-qa.example.com/3dspace",
+      "identifier": "service_identifier",
+      "service_name": "SERVICE_NAME",
+      "service_secret": "do-not-commit-real-secrets",
+      "security_context": ""
+    }
+  ]
+}

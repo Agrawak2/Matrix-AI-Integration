@@ -1,0 +1,32 @@
+1. {{3dpassport_url}}/api/v2/batch/ticket?service={{3dspace_url}}&identifier=svc2_matrix
+ 
+{3dpassport_url} - https://matrix-qa.myigt.com/3dpassport
+ 
+{3dspace_url} - https://matrix-qa.myigt.com/3dspace
+
+DS-SERVICE-NAME = Matrix_WS_API
+ 
+DS-SERVICE-SECRET = c6f92dd1-e9f8-4f51-8846-0932fc296e2f
+ 
+2. {{3dpassport_url}}/api/login/cas/transient?tgt={{access_token}}&service=https://matrix-qa.myigt.com/3dspace
+ 
+{access_token} - This is being retrieved from JSON result from 1st call
+ 
+3. {{3dspace_url}}/resources/IGT/v1/MQLService/executeMQL?query=print person agrawaa select assignment&ticket={{ticket}}
+ 
+{ticket} - This is the access token ticket returned from 2nd calls
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+https://matrix-qa.myigt.com/3dspace/resources/IGT/v1/MQLService/executeMQL?query=print%20person%20svc2_matrix
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Old code:
+ 
+			mqlService = new MQLServiceService();
+
+New code:
+mqlServiceRest = new MatrixMqlRestClient(
+							"https://matrix-qa.myigt.com/3dpassport",
+							"https://matrix-qa.myigt.com/3dspace",
+							"Matrix_WS_API",
+							"c6f92dd1-e9f8-4f51-8846-0932fc296e2f");

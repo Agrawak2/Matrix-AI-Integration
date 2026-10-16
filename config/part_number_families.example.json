@@ -1,0 +1,11 @@
+{
+  "families": [
+    {
+      "prefix": "629",
+      "name": "Bracket",
+      "keywords": ["bracket", "brkt", "mounting bracket"],
+      "verified": false,
+      "source": "Inferred from the supplied HE115-style workbook; verify against REF0178."
+    }
+  ]
+}

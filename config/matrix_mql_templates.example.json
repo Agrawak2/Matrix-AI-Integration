@@ -1,0 +1,9 @@
+{
+  "templates": {
+    "get_part": "print bus Part \\\"{part_number}\\\" * select current owner description dump |",
+    "search_parts": "temp query bus Part \\\"{query_pattern}\\\" * select current owner description dump |",
+    "duplicate_parts": "temp query bus Part \\\"{part_number}\\\" * select current owner description dump |",
+    "open_ecos_for_parts": "temp query bus ECO * * where \\\"current != 'Released'\\\" select current owner description dump |",
+    "where_used": "print bus Part \\\"{part_numbers}\\\" * select from[EBOM].to.name from[EBOM].to.current dump |"
+  }
+}
